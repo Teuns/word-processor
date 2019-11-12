@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const { generate, validate, parse, format } = require('build-number-generator');
 const webpack = require('webpack');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
   entry: { main: './src/index.js' },
@@ -48,6 +49,7 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       __BUILDID__: JSON.stringify(generate())
-    })
+    }),
+    new CleanWebpackPlugin()
   ]
 };

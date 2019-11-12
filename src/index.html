@@ -8,7 +8,14 @@
   </head>
   <body>
     <div class="topnav" id="myTopnav">
-    	<a href="#" class="active">File</a>
+    	<div class="dropdown">
+	    	<a href="#" class="active">File</a>
+	    	<div class="dropdown-content">
+			    <a href="#" onclick="window.print(); return false;">Print</a>
+			    <a href="#">Save</a>
+			    <a href="#">Close</a>
+			</div>
+		</div>
     	<a href="#">Contact</a>
     	<a href="#">About</a>
     	<a href="javascript:void();" class="icon" onclick="showHamburgerMenu()">
