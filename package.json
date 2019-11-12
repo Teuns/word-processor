@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.7.2",
+    "mammoth": "^1.4.9",
     "webpack-node-externals": "^1.7.2"
   }
 }

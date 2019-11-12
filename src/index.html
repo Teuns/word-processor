@@ -11,6 +11,12 @@
     	<div class="dropdown">
 	    	<a href="#" class="active">File</a>
 	    	<div class="dropdown-content">
+	    		<a href="#">
+	    			<label>
+					  <input type="file" onchange="onChooseFile(event, openDocx.bind(this))" style="display: none;">
+					  Load File (Docx)
+					</label>
+				</a>
 			    <a href="#" onclick="window.print(); return false;">Print</a>
 			    <a href="#">Save</a>
 			    <a href="#">Close</a>

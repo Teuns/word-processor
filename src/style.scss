@@ -146,16 +146,30 @@ page[size="A4"][layout="portrait"] {
 }
 
 @media print {
-	body * {
-    	visibility: hidden;
-  	}
+	.topnav {
+		display: none;
+	}
+
+	.flex-container {
+		display: none;
+	}
+
+	#title {
+		display: none;
+	}
 
 	page {
 		margin: 0;
+		box-shadow: none;
 	}
 
-	.document {
-		visibility: visible;
+	page[size="A4"] {
+		height: 0;
+	 	max-height: 296mm;
+	}
+
+	.copyright {
+		display: none;
 	}
 }
 

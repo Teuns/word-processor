@@ -1,4 +1,5 @@
 import './style.scss';
+import mammoth from '../node_modules/mammoth/mammoth.browser.js';
 
 window.showHamburgerMenu = function() {
   var x = document.getElementById("myTopnav");
@@ -9,21 +10,47 @@ window.showHamburgerMenu = function() {
   }
 } 
 
-window.chooseColor = function(){
+window.chooseColor = function() {
     var mycolor = document.getElementById("myColor").value;
     document.execCommand('foreColor', false, mycolor);
 }
 
-window.changeFont = function(){
+window.changeFont = function() {
   var myFont = document.getElementById("input-font").value;
   document.execCommand('fontName', false, myFont);
   setEditorFocus();
 }
 
-window.changeSize = function(){
+window.changeSize = function() {
   var mysize = document.getElementById("fontSize").value;
   document.execCommand('fontSize', false, mysize);
   setEditorFocus();
+}
+
+window.openDocx = function(event) {
+	mammoth.convertToHtml({arrayBuffer: event.target.result})
+    .then(function(result){
+        var html = result.value;
+        var div = document.querySelector("page .document"); 
+        div.innerHTML = html;
+    })
+    .done();
+}
+
+window.onChooseFile = function(event, onLoadFileHandler) {
+    if (typeof window.FileReader !== 'function')
+        throw ("The file API isn't supported on this browser.");
+    let input = event.target;
+    if (!input)
+        throw ("The browser does not properly implement the event object");
+    if (!input.files)
+        throw ("This browser does not support the `files` property of the file input.");
+    if (!input.files[0])
+        return undefined;
+    let file = input.files[0];
+    let fr = new FileReader();
+    fr.onload = onLoadFileHandler;
+    fr.readAsArrayBuffer(file);
 }
 
 var buttons = document.querySelectorAll("button");  
