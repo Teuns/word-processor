@@ -6,7 +6,7 @@
   	<title>Word processor</title>
     <link rel="stylesheet" href="<%=htmlWebpackPlugin.files.chunks.main.css %>">
   </head>
-  <body>
+  <body oncontextmenu="return false;">
     <div class="topnav" id="myTopnav">
     	<div class="dropdown">
 	    	<a href="#" class="active">File</a>
@@ -100,10 +100,23 @@
     		<h1>Document Title</h1>
     	</div>
     	<page size="A4" contenteditable="false">
-    		<span class="document" contenteditable="true">&zwnj;</span>
+    		<span class="document" contenteditable="true" oncontextmenu="showCtxMenu()">&zwnj;</span>
     	</page>
     	<span class="copyright">Copyright <a href="https://teunstrik.com">T. Strik</a>, buildid <%= __BUILDID__ %></span>
     </div>
+    <nav id="context-menu" class="context-menu">
+	    <ul class="context-menu__items">
+	      <li class="context-menu__item">
+	        <a href="#" class="context-menu__link" data-action="View"><i class="fa fa-cut"></i> Cut</a>
+	      </li>
+	      <li class="context-menu__item">
+	        <a href="#" class="context-menu__link" data-action="Edit"><i class="fa fa-copy"></i> Copy</a>
+	      </li>
+	      <li class="context-menu__item">
+	        <a href="#" class="context-menu__link" data-action="Delete"><i class="fa fa-paste"></i> Paste</a>
+	      </li>
+	    </ul>
+	</nav>
     <script src="<%= htmlWebpackPlugin.files.chunks.main.entry %>"></script>
   </body>
 </html>

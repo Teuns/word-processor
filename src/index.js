@@ -68,6 +68,25 @@ window.setEditorFocus = function() {
 	}, 0);
 }
 
+window.showCtxMenu = function() {
+	var x = event.clientX; 
+    var y = event.clientY; 
+
+	var div = document.getElementById("context-menu");
+	
+	div.style.top = y + 'px';
+    div.style.left = x + 'px';
+
+	div.style.display = "block";
+}
+
+var editorElement = document.querySelector("page .document"); 
+
+editorElement.addEventListener('click', function() {
+	var div = document.getElementById("context-menu");
+	div.style.display = "none";
+}, false);
+
 window.onload = function() {
 	setEditorFocus();
 }
