@@ -13,7 +13,7 @@
 	    	<div class="dropdown-content">
 	    		<a href="#">
 	    			<label style="cursor: pointer;">
-					  <input type="file" onchange="onChooseFile(event, openDocx.bind(this))" style="display: none;">
+					  <input type="file" onchange="onChooseFile(event, openDocx.bind(this));" style="display: none;">
 					  Load File (Docx)
 					</label>
 				</a>
@@ -99,8 +99,8 @@
     	<div id="title" contenteditable="true">
     		<h1>Document Title</h1>
     	</div>
-    	<page size="A4" contenteditable="false">
-    		<span class="document" contenteditable="true" oncontextmenu="showCtxMenu()">&zwnj;</span>
+    	<page size="A4" contenteditable="false" oncontextmenu="showCtxMenu()">
+    		<div class="document" contenteditable="true">&zwnj;</div>
     	</page>
     	<span class="copyright">Copyright <a href="https://teunstrik.com">T. Strik</a>, buildid <%= __BUILDID__ %></span>
     </div>
