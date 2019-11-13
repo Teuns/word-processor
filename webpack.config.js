@@ -5,6 +5,7 @@ const path = require('path');
 const { generate, validate, parse, format } = require('build-number-generator');
 const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = {
   entry: { main: './src/index.js' },
@@ -47,9 +48,15 @@ module.exports = {
       template: './src/index.html',
       filename: 'index.html'
     }),
+    new WorkboxPlugin.GenerateSW({
+      clientsClaim: true,
+      skipWaiting: true,
+    }),
     new webpack.DefinePlugin({
       __BUILDID__: JSON.stringify(generate())
     }),
-    new CleanWebpackPlugin()
+    new CleanWebpackPlugin({
+      cleanOnceBeforeBuildPatterns: ['**/*', '!icon-256x256.png', '!manifest.json'],
+    })
   ]
 };

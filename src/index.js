@@ -1,6 +1,16 @@
 import './style.scss';
 import mammoth from '../node_modules/mammoth/mammoth.browser.js';
 
+if ('serviceWorker' in navigator) {
+  	window.addEventListener('load', () => {
+	    navigator.serviceWorker.register('service-worker.js').then(registration => {
+	       console.log('SW registered: ', registration);
+	    }).catch(registrationError => {
+	       console.log('SW registration failed: ', registrationError);
+	    });
+   });
+}
+
 window.showHamburgerMenu = function() {
   var x = document.getElementById("myTopnav");
   if (x.className === "topnav") {
@@ -53,6 +63,32 @@ window.onChooseFile = function(event, onLoadFileHandler) {
     fr.readAsArrayBuffer(file);
 }
 
+window.onkeydown = function (e) {
+	var ul = document.createElement("ul");
+	var ol = document.createElement("ol");
+	var li_button = document.getElementById("list");
+	var ol_button = document.getElementById("ol-list");
+	
+	if(getSelectionStart().parentNode.nodeName === ul.nodeName) {
+		if (li_button.className !== 'button-active')
+			li_button.classList.toggle('button-active');
+	} else {
+		li_button.classList.remove('button-active');
+	}
+
+	if(getSelectionStart().parentNode.nodeName === ol.nodeName) {
+		if (ol_button.className !== 'button-active')
+			ol_button.classList.toggle('button-active');
+	} else {
+		ol_button.classList.remove('button-active');
+	}
+}
+
+function getSelectionStart() {
+   var node = document.getSelection().anchorNode;
+   return (node.nodeType == 3 ? node.parentNode : node);
+}
+
 var buttons = document.querySelectorAll("button");  
 
 Array.prototype.forEach.call(buttons, function (button) {
@@ -78,6 +114,12 @@ window.showCtxMenu = function() {
     div.style.left = x + 'px';
 
 	div.style.display = "block";
+}
+
+window.hideCtxMenu = function() {
+	var div = document.getElementById("context-menu");
+
+	div.style.display = "none";
 }
 
 var editorElement = document.querySelector("page .document"); 

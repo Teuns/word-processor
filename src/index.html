@@ -5,6 +5,7 @@
   	<meta name="description" content="A (basic) word processor made with JavaScript and HTML5">
   	<title>Word processor</title>
     <link rel="stylesheet" href="<%=htmlWebpackPlugin.files.chunks.main.css %>">
+    <link rel="manifest" href="manifest.json">
   </head>
   <body oncontextmenu="return false;">
     <div class="topnav" id="myTopnav">
@@ -74,10 +75,10 @@
     		<button onclick="document.execCommand('undo', false, null); setEditorFocus();" title="undo"><i class="fas fa-undo"></i></button>
     	</div>
     	<div class="item">
-    		<button onclick="document.execCommand('insertUnorderedList', false, null); setEditorFocus();" title="list"><i class="fas fa-list"></i></button>
+    		<button onclick="document.execCommand('insertUnorderedList', false, null); setEditorFocus();" id="list" title="list"><i class="fas fa-list"></i></button>
     	</div>
     	<div class="item">
-    		<button onclick="document.execCommand('insertOrderedList', false, null); setEditorFocus();" title="ordered list"><i class="fas fa-list-ol"></i></button>
+    		<button onclick="document.execCommand('insertOrderedList', false, null); setEditorFocus();" id="ol-list" title="ordered list"><i class="fas fa-list-ol"></i></button>
     	</div>
     	<div class="item">
     		<input type="color" onchange="chooseColor(); setEditorFocus();" title="color" id="myColor"> 
@@ -86,7 +87,7 @@
     		<select id="fontSize" onchange="changeSize();" title="font size">
 		        <option value="1">1</option>      
 		        <option value="2">2</option>
-		        <option value="3">3</option>
+		        <option value="3" selected/>3</option>
 		        <option value="4">4</option>
 		        <option value="5">5</option>
 		        <option value="6">6</option>
@@ -100,20 +101,20 @@
     		<h1>Document Title</h1>
     	</div>
     	<page size="A4" contenteditable="false" oncontextmenu="showCtxMenu()">
-    		<div class="document" contenteditable="true">&zwnj;</div>
+    		<div class="document" contenteditable="true"></div>
     	</page>
     	<span class="copyright">Copyright <a href="https://teunstrik.com">T. Strik</a>, buildid <%= __BUILDID__ %></span>
     </div>
     <nav id="context-menu" class="context-menu">
 	    <ul class="context-menu__items">
 	      <li class="context-menu__item">
-	        <a href="#" class="context-menu__link" data-action="View"><i class="fa fa-cut"></i> Cut</a>
+	        <a href="#" onclick="document.execCommand('cut'); hideCtxMenu();" class="context-menu__link" data-action="View"><i class="fa fa-cut"></i> Cut</a>
 	      </li>
 	      <li class="context-menu__item">
-	        <a href="#" class="context-menu__link" data-action="Edit"><i class="fa fa-copy"></i> Copy</a>
+	        <a href="#" onclick="document.execCommand('copy'); hideCtxMenu();" class="context-menu__link" data-action="Edit"><i class="fa fa-copy"></i> Copy</a>
 	      </li>
 	      <li class="context-menu__item">
-	        <a href="#" class="context-menu__link" data-action="Delete"><i class="fa fa-paste"></i> Paste</a>
+	        <a href="#" onclick="alert('Please use CTRL + V to paste'); hideCtxMenu();" class="context-menu__link" data-action="Delete"><i class="fa fa-paste"></i> Paste</a>
 	      </li>
 	    </ul>
 	</nav>
