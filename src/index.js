@@ -45,6 +45,9 @@ window.openDocx = function(event) {
         var html = result.value;
         var div = document.querySelector("page .document"); 
         div.innerHTML = html;
+        $('page .document').each(function() {
+	    	snipMe.call(this);
+	  	});
     })
     .done();
 }
@@ -150,6 +153,31 @@ window.listener = function() {
 	});
 }
 
+var max_pages = 100;
+var page_count = 0;
+
+window.snipMe = function() {
+  page_count++;
+  if (page_count > max_pages) {
+    return;
+  }
+  var long = $(this)[0].scrollHeight - Math.ceil($(this).innerHeight());
+  var children = $(this).children().toArray();
+  var removed = [];
+  while (long > 0 && children.length > 0) {
+    var child = children.pop();
+    $(child).detach();
+    removed.unshift(child);
+    long = $(this)[0].scrollHeight - Math.ceil($(this).innerHeight());
+  }
+  if (removed.length > 0) {
+    var a4 = $('<div class="document" id="page-' + page_count + '" contenteditable="true"></div>');
+    a4.append(removed);
+    $('.wrapper').append($('<page size="A4" contenteditable="false" oncontextmenu="showCtxMenu()"></page>').append(a4));
+    snipMe.call(a4[0]);
+  }
+}
+
 var pages = 1;
 
 function checkPages() {
@@ -158,6 +186,7 @@ function checkPages() {
 		var contentHeight = element.scrollHeight;
 	    var declaredHeight = $(element).innerHeight();
 	    if (contentHeight > declaredHeight){
+	    	console.log($(element).text());
 	    	if(!$(element).hasClass("valid")){
 	    		$(element).toggleClass("valid");
 	    		pages++;
