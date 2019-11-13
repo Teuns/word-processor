@@ -89,6 +89,7 @@ editorElement.addEventListener('click', function() {
 
 window.onload = function() {
 	setEditorFocus();
+	document.execCommand('enableObjectResizing', false, "true");
 }
 
 console.log("[-] Initialized word processor successfully!");

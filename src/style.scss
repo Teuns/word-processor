@@ -130,6 +130,10 @@ page .document {
 	&:focus {
 		outline: none;
 	}
+
+	img {
+		max-width: 100%;
+	}
 }
 
 page[size="A4"] {  
