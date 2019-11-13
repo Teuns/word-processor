@@ -1,5 +1,7 @@
 import './style.scss';
 import mammoth from '../node_modules/mammoth/mammoth.browser.js';
+import jQuery from "jquery";
+window.$ = window.jQuery = jQuery;
 
 if ('serviceWorker' in navigator) {
   	window.addEventListener('load', () => {
@@ -68,7 +70,7 @@ window.onkeydown = function (e) {
 	var ol = document.createElement("ol");
 	var li_button = document.getElementById("list");
 	var ol_button = document.getElementById("ol-list");
-	
+
 	if(getSelectionStart().parentNode.nodeName === ul.nodeName) {
 		if (li_button.className !== 'button-active')
 			li_button.classList.toggle('button-active');
@@ -97,8 +99,11 @@ Array.prototype.forEach.call(buttons, function (button) {
   });
 });
 
+var activeId = "page-1";
+
 window.setEditorFocus = function() {
-	var div = document.querySelector("page .document"); 
+	console.log(activeId);
+	var div = document.querySelector("page .document#" + activeId); 
 	setTimeout(function() {
 	    div.focus();
 	}, 0);
@@ -132,6 +137,43 @@ editorElement.addEventListener('click', function() {
 window.onload = function() {
 	setEditorFocus();
 	document.execCommand('enableObjectResizing', false, "true");
+	listener();
+}
+
+window.listener = function() {
+	$("page .document").on('keydown', function(){
+	    checkPages();
+	});
+
+	$("page .document").click(function(event) {
+    	makePageActive(event);
+	});
+}
+
+var pages = 1;
+
+function checkPages() {
+	$("page .document").each(function(index, element) {
+		console.log(element);
+		var contentHeight = element.scrollHeight;
+	    var declaredHeight = $(element).innerHeight();
+	    if (contentHeight > declaredHeight){
+	    	if(!$(element).hasClass("valid")){
+	    		$(element).toggleClass("valid");
+	    		pages++;
+	    		$('<page size="A4" contenteditable="false" oncontextmenu="showCtxMenu()"><div class="document" id="page-' + pages + '" contenteditable="true"></div></page>').appendTo('.wrapper');  
+	    		listener();
+	    		activeId = "page-" + pages;
+	    		setEditorFocus();
+	    	}
+		}
+	});
+}
+
+function makePageActive(element) {
+	console.log(element.currentTarget.id);
+
+	activeId = element.currentTarget.id;
 }
 
 console.log("[-] Initialized word processor successfully!");
