@@ -171,7 +171,8 @@ page[size="A4"][layout="portrait"] {
 	}
 
 	page[size="A4"] {
-	 	height: 296mm;
+		height: unset;
+	 	max-height: 296mm;
 	}
 
 	.copyright {
