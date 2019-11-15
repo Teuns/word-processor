@@ -47,6 +47,7 @@ window.openDocx = function(event) {
         div.innerHTML = html;
         $('page .document').each(function() {
 	    	snipMe.call(this);
+	    	listener();
 	  	});
     })
     .done();
@@ -105,11 +106,29 @@ Array.prototype.forEach.call(buttons, function (button) {
 var activeId = "page-1";
 
 window.setEditorFocus = function() {
-	console.log(activeId);
 	var div = document.querySelector("page .document#" + activeId); 
 	setTimeout(function() {
 	    div.focus();
+	    placeCaretAtEnd(div);
 	}, 0);
+}
+
+window.placeCaretAtEnd = function(el) {
+    el.focus();
+    if (typeof window.getSelection != "undefined"
+            && typeof document.createRange != "undefined") {
+        var range = document.createRange();
+        range.selectNodeContents(el);
+        range.collapse(false);
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+    } else if (typeof document.body.createTextRange != "undefined") {
+        var textRange = document.body.createTextRange();
+        textRange.moveToElementText(el);
+        textRange.collapse(false);
+        textRange.select();
+    }
 }
 
 window.showCtxMenu = function() {
@@ -144,7 +163,7 @@ window.onload = function() {
 }
 
 window.listener = function() {
-	$("page .document").on('keydown', function(){
+	$("page .document").on('keyup', function(){
 	    checkPages();
 	});
 
@@ -154,7 +173,9 @@ window.listener = function() {
 }
 
 var max_pages = 100;
-var page_count = 0;
+var page_count = 1;
+
+var pages = 1;
 
 window.snipMe = function() {
   page_count++;
@@ -176,21 +197,21 @@ window.snipMe = function() {
     $('.wrapper').append($('<page size="A4" contenteditable="false" oncontextmenu="showCtxMenu()"></page>').append(a4));
     snipMe.call(a4[0]);
   }
+  pages = page_count;
 }
-
-var pages = 1;
 
 function checkPages() {
 	$("page .document").each(function(index, element) {
-		console.log(element);
-		var contentHeight = element.scrollHeight;
-	    var declaredHeight = $(element).innerHeight();
+		var contentHeight = element.getBoundingClientRect().height;
+	    var declaredHeight = $('page').height();
+	    console.log("[-] Debug contentHeight: " + contentHeight);
+	    console.log("[-] Debug declaredHeight: " + declaredHeight);
 	    if (contentHeight > declaredHeight){
-	    	console.log($(element).text());
 	    	if(!$(element).hasClass("valid")){
 	    		$(element).toggleClass("valid");
 	    		pages++;
-	    		$('<page size="A4" contenteditable="false" oncontextmenu="showCtxMenu()"><div class="document" id="page-' + pages + '" contenteditable="true"></div></page>').appendTo('.wrapper');  
+	    		var a4 = $('<div class="document" id="page-' + pages + '" contenteditable="true"></div>');
+			    $('.wrapper').append($('<page size="A4" contenteditable="false" oncontextmenu="showCtxMenu()"></page>').append(a4));
 	    		listener();
 	    		activeId = "page-" + pages;
 	    		setEditorFocus();
@@ -200,8 +221,6 @@ function checkPages() {
 }
 
 function makePageActive(element) {
-	console.log(element.currentTarget.id);
-
 	activeId = element.currentTarget.id;
 }
 

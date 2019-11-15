@@ -1,0 +1,16 @@
+{
+  "name": "Word Processor",
+  "short_name": "WP",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "white",
+  "description": "A basic word processor made with JavaScript and HTML5",
+  "theme_color": "gray",
+  "icons": [
+    {
+      "src": "icon-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    }
+  ]
+}
